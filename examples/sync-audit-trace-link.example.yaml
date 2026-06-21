@@ -53,4 +53,3 @@ boundary:
 notes: >
   v0.1 defines the minimum connection layer between synchronization audit records
   and trace evidence systems.
-```
