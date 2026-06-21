@@ -2,6 +2,138 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.4.0-candidate
+
+### Status
+
+Candidate release.
+
+The v0.4 schema, example, and validator update have been added.
+
+The GitHub Actions validation workflow has passed.
+
+### Added
+
+* Added `Multi-case Synchronization Graph` as the fourth integration model.
+* Added `schemas/multi-case-synchronization-graph.schema.json`.
+* Added `examples/multi-case-synchronization-graph.example.yaml`.
+* Updated `scripts/validate_examples.py` to validate:
+
+  * `Sync Audit Trace Link`
+  * `AI Search Trace Integration`
+  * `Unified Trace Receipt Integration`
+  * `Multi-case Synchronization Graph`
+* Updated README documentation to describe:
+
+  * v0.4 scope
+  * graph scope
+  * case nodes
+  * case edges
+  * relationship types
+  * relationship strengths
+  * graph-level analysis
+  * dominant synchronization pattern
+  * conflict notes
+  * human review requirements
+  * graph storage boundary
+  * updated repository structure
+  * updated validation expectations
+
+### v0.4 Scope
+
+v0.4 connects multiple synchronization audit cases into a graph.
+
+It establishes a structured bridge between:
+
+* synchronization audit cases
+* parent sync audit trace links
+* AI search trace integrations
+* unified trace receipt integrations
+* repository references
+* graph nodes
+* graph edges
+* case-to-case relationship types
+* evidence references
+* relationship strength assessments
+* graph-level dominant patterns
+* confidence levels
+* conflict notes
+* human review requirements
+* graph storage boundaries
+
+### Purpose
+
+This release makes it possible to analyze synchronization patterns across multiple audit cases instead of treating each case in isolation.
+
+```text
+single audit case
+↓
+trace link
+↓
+search trace
+↓
+unified receipt bundle
+↓
+multi-case synchronization graph
+↓
+case relationships / graph pattern / review boundary
+```
+
+### Validation
+
+The following validation path now covers v0.1, v0.2, v0.3, and v0.4 examples:
+
+```bash
+python scripts/validate_examples.py
+```
+
+Expected validation targets:
+
+```text
+[validate] Sync Audit Trace Link
+[validate] AI Search Trace Integration
+[validate] Unified Trace Receipt Integration
+[validate] Multi-case Synchronization Graph
+```
+
+The GitHub Actions workflow validates examples on:
+
+* push to `main`
+* pull request to `main`
+* manual workflow dispatch
+
+### Boundary
+
+This repository does not replace the synchronization audit protocol.
+
+It does not prove legal dependency by itself.
+
+It does not store full third-party source content by default.
+
+It does not store complete search result pages by default.
+
+It does not embed complete component payloads by default.
+
+It links evidence routes, trace references, query metadata, fingerprints, search evidence summaries, component receipts, aggregation metadata, graph nodes, graph edges, relationship assessments, and review metadata so that synchronization audit results can be connected to broader trace systems.
+
+### Repository Role
+
+```text
+synchronization-audit-protocol
+= ruler, classification, human review boundary
+
+sync-audit-trace-integration
+= evidence route, search trace link, unified bundle, synchronization graph
+```
+
+### Next
+
+Planned next step:
+
+```text
+v0.5 = Cross-repository Audit Bundle
+```
+
 ## v0.3.0-candidate
 
 ### Status
@@ -71,7 +203,7 @@ aggregated evidence / alignment / review boundary
 
 ### Validation
 
-The following validation path now covers v0.1, v0.2, and v0.3 examples:
+The following validation path covers v0.1, v0.2, and v0.3 examples:
 
 ```bash
 python scripts/validate_examples.py
