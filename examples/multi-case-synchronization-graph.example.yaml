@@ -1,0 +1,133 @@
+spec_version: v0.4.0
+graph_id: multi-case-sync-graph-001
+
+graph_scope:
+  scope_type: cross_repository
+  scope_summary: >
+    This graph connects multiple synchronization audit cases across related
+    trace, search trace, and receipt repositories.
+  repository_refs:
+    - synchronization-audit-protocol
+    - sync-audit-trace-integration
+    - ai-search-trace-receipt-standard
+    - kazene-trace-receipt-protocol
+  time_window:
+    start: "2026-06-01T00:00:00Z"
+    end: "2026-06-21T00:00:00Z"
+
+case_nodes:
+  - node_id: case-node-001
+    audit_case_id: sync-audit-case-2026-001
+    classification: possible_influence
+    sync_audit_trace_link_ref: examples/sync-audit-trace-link.example.yaml
+    ai_search_trace_integration_ref: examples/ai-search-trace-integration.example.yaml
+    unified_trace_receipt_integration_ref: examples/unified-trace-receipt-integration.example.yaml
+    repository_refs:
+      - synchronization-audit-protocol
+      - sync-audit-trace-integration
+    node_summary: >
+      This case represents a synchronization audit with possible influence
+      classification and linked search trace evidence.
+
+  - node_id: case-node-002
+    audit_case_id: sync-audit-case-2026-002
+    classification: natural_convergence
+    sync_audit_trace_link_ref: audits/sync-audit-trace-link-002.yaml
+    ai_search_trace_integration_ref: audits/ai-search-trace-integration-002.yaml
+    unified_trace_receipt_integration_ref: audits/unified-trace-receipt-integration-002.yaml
+    repository_refs:
+      - ai-search-trace-receipt-standard
+      - kazene-trace-receipt-protocol
+    node_summary: >
+      This case represents a structurally similar pattern classified as natural
+      convergence after search trace and receipt review.
+
+  - node_id: case-node-003
+    audit_case_id: sync-audit-case-2026-003
+    classification: requires_human_review
+    sync_audit_trace_link_ref: audits/sync-audit-trace-link-003.yaml
+    ai_search_trace_integration_ref: audits/ai-search-trace-integration-003.yaml
+    unified_trace_receipt_integration_ref: audits/unified-trace-receipt-integration-003.yaml
+    repository_refs:
+      - synchronization-audit-protocol
+      - ai-search-trace-receipt-standard
+    node_summary: >
+      This case contains overlapping evidence signals and remains unresolved
+      until human review is completed.
+
+case_edges:
+  - edge_id: case-edge-001
+    source_node_id: case-node-001
+    target_node_id: case-node-002
+    relationship_type: shared_source_context
+    relationship_strength: moderate
+    evidence_refs:
+      - examples/unified-trace-receipt-integration.example.yaml
+      - ai-search-trace-receipt-standard/examples/ai-search-trace-receipt.example.yaml
+    assessment_summary: >
+      Both cases share repository-level context and related trace receipt
+      references, but their audit classifications differ.
+    requires_human_review: true
+
+  - edge_id: case-edge-002
+    source_node_id: case-node-001
+    target_node_id: case-node-003
+    relationship_type: possible_influence_path
+    relationship_strength: weak
+    evidence_refs:
+      - audits/ai-search-trace-integration-003.yaml
+      - audits/unified-trace-receipt-integration-003.yaml
+    assessment_summary: >
+      The evidence suggests a possible influence path, but the relationship is
+      weak and should not be treated as dependency without additional review.
+    requires_human_review: true
+
+  - edge_id: case-edge-003
+    source_node_id: case-node-002
+    target_node_id: case-node-003
+    relationship_type: contradictory_evidence
+    relationship_strength: inconclusive
+    evidence_refs:
+      - audits/sync-audit-trace-link-002.yaml
+      - audits/sync-audit-trace-link-003.yaml
+    assessment_summary: >
+      One case is classified as natural convergence while the other requires
+      human review, creating an unresolved graph-level tension.
+    requires_human_review: true
+
+graph_analysis:
+  analysis_summary: >
+    The graph shows a mixed synchronization pattern across three audit cases.
+    Some relationships indicate shared source context, while others remain weak
+    or inconclusive. Human review is required before graph-level conclusions are
+    finalized.
+  dominant_pattern: mixed_pattern
+  confidence_level: medium
+  conflict_notes:
+    - Case-node-002 is classified as natural convergence while related cases remain unresolved.
+    - Case-node-003 requires human review before dependency or convergence claims can be finalized.
+    - Shared repository context does not prove direct dependency.
+  requires_human_review: true
+
+integration_status:
+  status: draft
+  reviewer: human-reviewer-required
+
+boundary:
+  stores_full_source_content: false
+  stores_full_search_results: false
+  stores_component_payloads: false
+  purpose: >
+    Represent relationships among multiple synchronization audit cases without
+    storing full source content, full search results, or complete component
+    payloads.
+  limitations:
+    - Does not prove legal dependency by itself.
+    - Graph edges require human review before final interpretation.
+    - Shared context should not be treated as direct influence without stronger evidence.
+    - Depends on referenced audit and trace records remaining available.
+
+notes: >
+  v0.4 introduces a multi-case synchronization graph for connecting multiple
+  audit cases, trace links, search trace integrations, and unified receipt
+  bundles.
