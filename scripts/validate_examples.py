@@ -24,6 +24,11 @@ VALIDATION_TARGETS = [
         "schema": ROOT / "schemas" / "unified-trace-receipt-integration.schema.json",
         "example": ROOT / "examples" / "unified-trace-receipt-integration.example.yaml",
     },
+    {
+        "name": "Multi-case Synchronization Graph",
+        "schema": ROOT / "schemas" / "multi-case-synchronization-graph.schema.json",
+        "example": ROOT / "examples" / "multi-case-synchronization-graph.example.yaml",
+    },
 ]
 
 
@@ -76,4 +81,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
