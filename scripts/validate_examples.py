@@ -29,6 +29,11 @@ VALIDATION_TARGETS = [
         "schema": ROOT / "schemas" / "multi-case-synchronization-graph.schema.json",
         "example": ROOT / "examples" / "multi-case-synchronization-graph.example.yaml",
     },
+    {
+        "name": "Cross-repository Audit Bundle",
+        "schema": ROOT / "schemas" / "cross-repository-audit-bundle.schema.json",
+        "example": ROOT / "examples" / "cross-repository-audit-bundle.example.yaml",
+    },
 ]
 
 
@@ -81,3 +86,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
