@@ -1,0 +1,85 @@
+spec_version: v0.3.0
+integration_id: unified-trace-receipt-integration-001
+
+parent_records:
+  sync_audit_trace_link_id: sync-audit-trace-link-001
+  ai_search_trace_integration_id: ai-search-trace-integration-001
+  audit_case_id: sync-audit-case-2026-001
+  audit_classification: possible_influence
+
+unified_trace_receipt:
+  bundle_id: unified-trace-bundle-2026-001
+  standard: Unified Trace Receipt
+  bundle_version: v0.1.0
+  bundle_ref: unified-trace-receipts/examples/unified-trace-bundle.example.yaml
+  bundle_hash: sha256-placeholder-for-unified-bundle-integrity
+
+component_receipts:
+  - component_id: sync-audit-trace-link-001
+    component_type: sync_audit_trace_link
+    component_ref: examples/sync-audit-trace-link.example.yaml
+    role: primary_audit_record
+    integrity_hash: sha256-placeholder-sync-audit-trace-link
+
+  - component_id: ai-search-trace-receipt-2026-001
+    component_type: ai_search_trace_receipt
+    component_ref: ai-search-trace-receipt-standard/examples/ai-search-trace-receipt.example.yaml
+    role: search_trace_evidence
+    integrity_hash: sha256-placeholder-ai-search-trace-receipt
+
+  - component_id: trace-receipt-2026-001
+    component_type: trace_receipt
+    component_ref: kazene-trace-receipt-protocol/examples/trace-receipt.example.yaml
+    role: supporting_receipt
+    integrity_hash: sha256-placeholder-trace-receipt
+
+  - component_id: structure-fingerprint-2026-001
+    component_type: source_fingerprint
+    component_ref: synchronization-audit-protocol/examples/structure-fingerprint.example.yaml
+    role: fingerprint_reference
+    integrity_hash: sha256-placeholder-structure-fingerprint
+
+aggregation_model:
+  aggregation_type: evidence_bundle
+  aggregation_summary: >
+    This unified trace receipt bundle aggregates the synchronization audit trace
+    link, AI search trace receipt, trace receipt reference, and structure
+    fingerprint reference into a single evidence bundle.
+  ordering_rule: dependency_order
+  deduplication_rule: >
+    Duplicate repository or source references should be represented once and
+    cross-linked from each component that depends on them.
+
+evidence_alignment:
+  alignment_summary: >
+    The unified bundle aligns the audit classification with search trace
+    evidence, supporting trace receipts, and structure fingerprint references.
+    It preserves the evidence route without embedding full third-party source
+    material.
+  confidence_level: medium
+  conflict_notes:
+    - The available evidence supports contextual similarity but does not prove direct dependency.
+    - Human review is required before final classification.
+  requires_human_review: true
+
+integration_status:
+  status: draft
+  reviewer: human-reviewer-required
+
+boundary:
+  stores_full_source_content: false
+  stores_full_search_results: false
+  stores_component_payloads: false
+  purpose: >
+    Provide a unified reference bundle for synchronization audit evidence while
+    avoiding duplication of full source content, full search result pages, or
+    complete component payloads.
+  limitations:
+    - Does not prove legal dependency by itself.
+    - Does not store complete component payloads.
+    - Requires human review for final evidence alignment.
+    - Depends on referenced receipts remaining available and verifiable.
+
+notes: >
+  v0.3 connects sync audit trace links and AI search trace integrations to a
+  unified trace receipt bundle.
