@@ -1,0 +1,132 @@
+spec_version: v0.5.0
+bundle_id: cross-repository-audit-bundle-001
+
+bundle_scope:
+  scope_type: cross_repository_review_bundle
+  scope_summary: >
+    This bundle collects synchronization audit records, trace integrations,
+    search trace receipts, unified receipt integrations, and multi-case graph
+    records across related repositories.
+  purpose: >
+    Provide a reviewable cross-repository audit bundle without duplicating full
+    source content, full search result pages, or complete component payloads.
+  time_window:
+    start: "2026-06-01T00:00:00Z"
+    end: "2026-06-21T00:00:00Z"
+
+included_repositories:
+  - repository_id: repo-001
+    repository_name: synchronization-audit-protocol
+    repository_role: audit_protocol_source
+    repository_ref: github.com/SamuraiWriter7/synchronization-audit-protocol
+    revision_ref: v0.5.0-candidate
+
+  - repository_id: repo-002
+    repository_name: sync-audit-trace-integration
+    repository_role: trace_integration_layer
+    repository_ref: github.com/SamuraiWriter7/sync-audit-trace-integration
+    revision_ref: v0.5.0-candidate
+
+  - repository_id: repo-003
+    repository_name: ai-search-trace-receipt-standard
+    repository_role: search_trace_source
+    repository_ref: github.com/SamuraiWriter7/ai-search-trace-receipt-standard
+    revision_ref: v0.5.0-candidate
+
+  - repository_id: repo-004
+    repository_name: kazene-trace-receipt-protocol
+    repository_role: trace_receipt_source
+    repository_ref: github.com/SamuraiWriter7/kazene-trace-receipt-protocol
+    revision_ref: v0.5.0-candidate
+
+included_records:
+  - record_id: record-001
+    record_type: sync_audit_trace_link
+    record_ref: examples/sync-audit-trace-link.example.yaml
+    source_repository_id: repo-002
+    record_role: trace_link_record
+    integrity_hash: sha256-placeholder-sync-audit-trace-link
+
+  - record_id: record-002
+    record_type: ai_search_trace_integration
+    record_ref: examples/ai-search-trace-integration.example.yaml
+    source_repository_id: repo-002
+    record_role: search_trace_record
+    integrity_hash: sha256-placeholder-ai-search-trace-integration
+
+  - record_id: record-003
+    record_type: unified_trace_receipt_integration
+    record_ref: examples/unified-trace-receipt-integration.example.yaml
+    source_repository_id: repo-002
+    record_role: unified_bundle_record
+    integrity_hash: sha256-placeholder-unified-trace-integration
+
+  - record_id: record-004
+    record_type: multi_case_synchronization_graph
+    record_ref: examples/multi-case-synchronization-graph.example.yaml
+    source_repository_id: repo-002
+    record_role: graph_record
+    integrity_hash: sha256-placeholder-multi-case-graph
+
+  - record_id: record-005
+    record_type: ai_search_trace_receipt
+    record_ref: ai-search-trace-receipt-standard/examples/ai-search-trace-receipt.example.yaml
+    source_repository_id: repo-003
+    record_role: supporting_evidence
+    integrity_hash: sha256-placeholder-ai-search-trace-receipt
+
+  - record_id: record-006
+    record_type: trace_receipt
+    record_ref: kazene-trace-receipt-protocol/examples/trace-receipt.example.yaml
+    source_repository_id: repo-004
+    record_role: supporting_evidence
+    integrity_hash: sha256-placeholder-trace-receipt
+
+multi_case_graph_refs:
+  - graph_id: multi-case-sync-graph-001
+    graph_ref: examples/multi-case-synchronization-graph.example.yaml
+    graph_role: primary_case_map
+
+bundle_manifest:
+  manifest_summary: >
+    The bundle assembles audit-to-trace links, search trace integrations,
+    unified receipt integrations, multi-case graph records, and supporting
+    receipt references across multiple repositories.
+  assembly_rule: dependency_order
+  deduplication_rule: >
+    Records with overlapping repository references should be listed once in
+    included_repositories and cross-linked by repository_id from each record.
+  completeness_level: substantial
+
+review_model:
+  review_status: pending_human_review
+  review_summary: >
+    The bundle is ready for cross-repository human review. It provides linked
+    records and references, but does not by itself prove legal dependency.
+  reviewer: human-reviewer-required
+  requires_human_review: true
+  review_notes:
+    - Cross-repository references should be checked before final release.
+    - Integrity hashes are placeholders and should be replaced by actual digests.
+    - The bundle links evidence references rather than embedding full source material.
+
+integration_status:
+  status: draft
+
+boundary:
+  stores_full_source_content: false
+  stores_full_search_results: false
+  stores_component_payloads: false
+  purpose: >
+    Bundle cross-repository audit and trace records for review while preserving
+    references and integrity metadata rather than full source content.
+  limitations:
+    - Does not prove legal dependency by itself.
+    - Requires human review before final classification.
+    - Depends on referenced repositories and records remaining available.
+    - Placeholder hashes should be replaced by implementation-specific digests.
+
+notes: >
+  v0.5 introduces a cross-repository audit bundle for collecting trace,
+  search, unified receipt, and graph records across repositories.
+
