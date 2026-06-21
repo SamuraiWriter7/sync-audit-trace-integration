@@ -19,6 +19,11 @@ VALIDATION_TARGETS = [
         "schema": ROOT / "schemas" / "ai-search-trace-integration.schema.json",
         "example": ROOT / "examples" / "ai-search-trace-integration.example.yaml",
     },
+    {
+        "name": "Unified Trace Receipt Integration",
+        "schema": ROOT / "schemas" / "unified-trace-receipt-integration.schema.json",
+        "example": ROOT / "examples" / "unified-trace-receipt-integration.example.yaml",
+    },
 ]
 
 
@@ -71,3 +76,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
