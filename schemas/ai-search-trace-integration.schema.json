@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/SamuraiWriter7/sync-audit-trace-integration/schemas/ai-search-trace-integration.schema.json",
+  "title": "AI Search Trace Integration",
+  "description": "An integration object connecting synchronization audit trace links with AI Search Trace Receipt records.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_version",
+    "integration_id",
+    "parent_sync_audit_trace_link",
+    "ai_search_trace_receipt",
+    "query_context",
+    "source_evidence",
+    "linkage_assessment",
+    "integration_status",
+    "boundary"
+  ],
+  "properties": {
+    "spec_version": {
+      "type": "string",
+      "description": "Version of this integration specification.",
+      "pattern": "^v[0-9]+\\.[0-9]+(\\.[0-9]+)?(-[a-zA-Z0-9.-]+)?$"
+    },
+    "integration_id": {
+      "type": "string",
+      "description": "Unique identifier for this AI search trace integration record.",
+      "minLength": 1
+    },
+    "parent_sync_audit_trace_link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "link_id",
+        "audit_case_id",
+        "classification"
+      ],
+      "properties": {
+        "link_id": {
+          "type": "string",
+          "description": "Identifier of the parent Sync Audit Trace Link record.",
+          "minLength": 1
+        },
+        "audit_case_id": {
+          "type": "string",
+          "description": "Identifier of the related synchronization audit case.",
+          "minLength": 1
+        },
+        "classification": {
+          "type": "string",
+          "description": "Classification result from the parent synchronization audit.",
+          "enum": [
+            "natural_convergence",
+            "possible_influence",
+            "probable_influence",
+            "direct_dependency",
+            "unclear",
+            "requires_human_review"
+          ]
+        }
+      }
+    },
+    "ai_search_trace_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "receipt_id",
+        "standard",
+        "receipt_version",
+        "receipt_ref"
+      ],
+      "properties": {
+        "receipt_id": {
+          "type": "string",
+          "description": "Identifier of the AI Search Trace Receipt.",
+          "minLength": 1
+        },
+        "standard": {
+          "type": "string",
+          "description": "Name of the source search trace standard.",
+          "const": "AI Search Trace Receipt Standard"
+        },
+        "receipt_version": {
+          "type": "string",
+          "description": "Version of the AI Search Trace Receipt standard used.",
+          "minLength": 1
+        },
+        "receipt_ref": {
+          "type": "string",
+          "description": "Path, URI, or repository reference to the search trace receipt.",
+          "minLength": 1
+        },
+        "receipt_hash": {
+          "type": "string",
+          "description": "Optional digest or hash for receipt integrity checking."
+        }
+      }
+    },
+    "query_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "search_session_id",
+        "query_purpose",
+        "query_summary"
+      ],
+      "properties": {
+        "search_session_id": {
+          "type": "string",
+          "description": "Identifier of the search session connected to the audit.",
+          "minLength": 1
+        },
+        "query_purpose": {
+          "type": "string",
+          "description": "Purpose of the search in relation to the synchronization audit.",
+          "enum": [
+            "prior_art_check",
+            "source_discovery",
+            "similarity_context_check",
+            "influence_path_check",
+            "claim_verification",
+            "other"
+          ]
+        },
+        "query_summary": {
+          "type": "string",
+          "description": "Human-readable summary of the search intent and query route.",
+          "minLength": 1
+        },
+        "query_terms": {
+          "type": "array",
+          "description": "Search terms or normalized query phrases used during the audit.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "searched_at": {
+          "type": "string",
+          "description": "Timestamp of the search session in ISO 8601 format.",
+          "format": "date-time"
+        }
+      }
+    },
+    "source_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_refs",
+        "evidence_summary"
+      ],
+      "properties": {
+        "source_refs": {
+          "type": "array",
+          "description": "References to search result sources used as evidence.",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_id",
+              "source_type",
+              "source_ref"
+            ],
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "description": "Source identifier within the search trace receipt.",
+                "minLength": 1
+              },
+              "source_type": {
+                "type": "string",
+                "enum": [
+                  "web_page",
+                  "repository",
+                  "paper",
+                  "documentation",
+                  "news",
+                  "dataset",
+                  "other"
+                ]
+              },
+              "source_ref": {
+                "type": "string",
+                "description": "Reference, URI, path, or citation key for the source.",
+                "minLength": 1
+              },
+              "contribution_role": {
+                "type": "string",
+                "description": "How this source contributed to the audit judgment.",
+                "enum": [
+                  "background_context",
+                  "similarity_signal",
+                  "counter_evidence",
+                  "dependency_signal",
+                  "origin_candidate",
+                  "review_reference",
+                  "other"
+                ]
+              }
+            }
+          }
+        },
+        "evidence_summary": {
+          "type": "string",
+          "description": "Summary of how the search evidence contributed to the synchronization audit.",
+          "minLength": 1
+        },
+        "sampled_evidence_refs": {
+          "type": "array",
+          "description": "Optional references to sampled snippets, fingerprints, or encoded evidence records.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "linkage_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "link_strength",
+        "assessment_summary",
+        "requires_human_review"
+      ],
+      "properties": {
+        "link_strength": {
+          "type": "string",
+          "description": "Strength of the relationship between the audit case and search trace evidence.",
+          "enum": [
+            "weak",
+            "moderate",
+            "strong",
+            "inconclusive"
+          ]
+        },
+        "assessment_summary": {
+          "type": "string",
+          "description": "Human-readable assessment of the search trace linkage.",
+          "minLength": 1
+        },
+        "requires_human_review": {
+          "type": "boolean",
+          "description": "Whether human review is required before treating this integration as resolved."
+        }
+      }
+    },
+    "integration_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "linked",
+            "reviewed",
+            "archived"
+          ]
+        },
+        "reviewer": {
+          "type": "string",
+          "description": "Human or agent responsible for reviewing this integration."
+        },
+        "reviewed_at": {
+          "type": "string",
+          "description": "Review timestamp in ISO 8601 format.",
+          "format": "date-time"
+        }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stores_full_search_results",
+        "stores_full_source_content",
+        "purpose"
+      ],
+      "properties": {
+        "stores_full_search_results": {
+          "type": "boolean",
+          "description": "Whether this integration stores full search results. Recommended value is false."
+        },
+        "stores_full_source_content": {
+          "type": "boolean",
+          "description": "Whether this integration stores full third-party source content. Recommended value is false."
+        },
+        "purpose": {
+          "type": "string",
+          "description": "Purpose of the search trace integration boundary.",
+          "minLength": 1
+        },
+        "limitations": {
+          "type": "array",
+          "description": "Known limitations of this integration record.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional implementation or review notes."
+    }
+  }
+}
+```
