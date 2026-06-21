@@ -1,0 +1,387 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/SamuraiWriter7/sync-audit-trace-integration/schemas/cross-repository-audit-bundle.schema.json",
+  "title": "Cross-repository Audit Bundle",
+  "description": "A bundle model for collecting synchronization audit records, trace integrations, multi-case graphs, and repository-level evidence across multiple repositories.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_version",
+    "bundle_id",
+    "bundle_scope",
+    "included_repositories",
+    "included_records",
+    "multi_case_graph_refs",
+    "bundle_manifest",
+    "review_model",
+    "integration_status",
+    "boundary"
+  ],
+  "properties": {
+    "spec_version": {
+      "type": "string",
+      "description": "Version of this bundle specification.",
+      "pattern": "^v[0-9]+\\.[0-9]+(\\.[0-9]+)?(-[a-zA-Z0-9.-]+)?$"
+    },
+    "bundle_id": {
+      "type": "string",
+      "description": "Unique identifier for this cross-repository audit bundle.",
+      "minLength": 1
+    },
+    "bundle_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope_type",
+        "scope_summary",
+        "purpose"
+      ],
+      "properties": {
+        "scope_type": {
+          "type": "string",
+          "description": "Scope of the cross-repository audit bundle.",
+          "enum": [
+            "candidate_release_bundle",
+            "cross_repository_review_bundle",
+            "historical_audit_bundle",
+            "evidence_submission_bundle",
+            "governance_review_bundle",
+            "other"
+          ]
+        },
+        "scope_summary": {
+          "type": "string",
+          "description": "Human-readable summary of the bundle scope.",
+          "minLength": 1
+        },
+        "purpose": {
+          "type": "string",
+          "description": "Purpose of collecting these repositories and records into one bundle.",
+          "minLength": 1
+        },
+        "time_window": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "start": {
+              "type": "string",
+              "description": "Optional start timestamp for the bundle scope.",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "description": "Optional end timestamp for the bundle scope.",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    },
+    "included_repositories": {
+      "type": "array",
+      "description": "Repositories included in this cross-repository audit bundle.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "repository_id",
+          "repository_name",
+          "repository_role",
+          "repository_ref"
+        ],
+        "properties": {
+          "repository_id": {
+            "type": "string",
+            "description": "Unique repository identifier within the bundle.",
+            "minLength": 1
+          },
+          "repository_name": {
+            "type": "string",
+            "description": "Repository name.",
+            "minLength": 1
+          },
+          "repository_role": {
+            "type": "string",
+            "description": "Role of the repository in this audit bundle.",
+            "enum": [
+              "audit_protocol_source",
+              "trace_integration_layer",
+              "search_trace_source",
+              "trace_receipt_source",
+              "unified_receipt_source",
+              "evidence_source",
+              "review_source",
+              "other"
+            ]
+          },
+          "repository_ref": {
+            "type": "string",
+            "description": "Repository URL, path, or identifier.",
+            "minLength": 1
+          },
+          "revision_ref": {
+            "type": "string",
+            "description": "Optional commit hash, tag, branch, or release reference."
+          }
+        }
+      }
+    },
+    "included_records": {
+      "type": "array",
+      "description": "Audit, trace, search, receipt, and review records included in this bundle.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "record_id",
+          "record_type",
+          "record_ref",
+          "source_repository_id",
+          "record_role"
+        ],
+        "properties": {
+          "record_id": {
+            "type": "string",
+            "description": "Unique record identifier within the bundle.",
+            "minLength": 1
+          },
+          "record_type": {
+            "type": "string",
+            "description": "Type of record included in the bundle.",
+            "enum": [
+              "sync_audit_record",
+              "sync_audit_trace_link",
+              "ai_search_trace_integration",
+              "unified_trace_receipt_integration",
+              "multi_case_synchronization_graph",
+              "trace_receipt",
+              "ai_search_trace_receipt",
+              "source_fingerprint",
+              "human_review_record",
+              "other"
+            ]
+          },
+          "record_ref": {
+            "type": "string",
+            "description": "Path, URI, or repository reference to the record.",
+            "minLength": 1
+          },
+          "source_repository_id": {
+            "type": "string",
+            "description": "Identifier of the repository from which this record originates.",
+            "minLength": 1
+          },
+          "record_role": {
+            "type": "string",
+            "description": "Role of this record within the bundle.",
+            "enum": [
+              "primary_audit_record",
+              "trace_link_record",
+              "search_trace_record",
+              "unified_bundle_record",
+              "graph_record",
+              "supporting_evidence",
+              "review_boundary",
+              "integrity_reference",
+              "other"
+            ]
+          },
+          "integrity_hash": {
+            "type": "string",
+            "description": "Optional digest or hash for record integrity checking."
+          }
+        }
+      }
+    },
+    "multi_case_graph_refs": {
+      "type": "array",
+      "description": "References to multi-case synchronization graphs included in this bundle.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "graph_id",
+          "graph_ref",
+          "graph_role"
+        ],
+        "properties": {
+          "graph_id": {
+            "type": "string",
+            "description": "Identifier of the multi-case synchronization graph.",
+            "minLength": 1
+          },
+          "graph_ref": {
+            "type": "string",
+            "description": "Path, URI, or repository reference to the graph.",
+            "minLength": 1
+          },
+          "graph_role": {
+            "type": "string",
+            "description": "Role of the graph inside this bundle.",
+            "enum": [
+              "primary_case_map",
+              "supporting_case_map",
+              "conflict_map",
+              "historical_context_map",
+              "other"
+            ]
+          }
+        }
+      }
+    },
+    "bundle_manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_summary",
+        "assembly_rule",
+        "deduplication_rule"
+      ],
+      "properties": {
+        "manifest_summary": {
+          "type": "string",
+          "description": "Human-readable summary of what this bundle contains.",
+          "minLength": 1
+        },
+        "assembly_rule": {
+          "type": "string",
+          "description": "Rule used to assemble records into this bundle.",
+          "enum": [
+            "release_candidate_records",
+            "cross_repository_references",
+            "evidence_strength_order",
+            "dependency_order",
+            "manual_review_order",
+            "mixed_order"
+          ]
+        },
+        "deduplication_rule": {
+          "type": "string",
+          "description": "Rule for handling duplicate records or overlapping evidence references.",
+          "minLength": 1
+        },
+        "completeness_level": {
+          "type": "string",
+          "description": "Completeness level of the bundle.",
+          "enum": [
+            "minimal",
+            "partial",
+            "substantial",
+            "complete",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "review_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "review_status",
+        "review_summary",
+        "requires_human_review"
+      ],
+      "properties": {
+        "review_status": {
+          "type": "string",
+          "description": "Review status of the bundle.",
+          "enum": [
+            "draft",
+            "pending_human_review",
+            "under_review",
+            "reviewed",
+            "archived"
+          ]
+        },
+        "review_summary": {
+          "type": "string",
+          "description": "Human-readable review summary for the bundle.",
+          "minLength": 1
+        },
+        "reviewer": {
+          "type": "string",
+          "description": "Human or agent responsible for reviewing this bundle."
+        },
+        "requires_human_review": {
+          "type": "boolean",
+          "description": "Whether human review is required before treating this bundle as resolved."
+        },
+        "review_notes": {
+          "type": "array",
+          "description": "Review notes, unresolved issues, or boundary warnings.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "integration_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "linked",
+            "reviewed",
+            "archived"
+          ]
+        },
+        "reviewed_at": {
+          "type": "string",
+          "description": "Review timestamp in ISO 8601 format.",
+          "format": "date-time"
+        }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stores_full_source_content",
+        "stores_full_search_results",
+        "stores_component_payloads",
+        "purpose"
+      ],
+      "properties": {
+        "stores_full_source_content": {
+          "type": "boolean",
+          "description": "Whether this bundle stores full third-party source content. Recommended value is false."
+        },
+        "stores_full_search_results": {
+          "type": "boolean",
+          "description": "Whether this bundle stores full search result pages. Recommended value is false."
+        },
+        "stores_component_payloads": {
+          "type": "boolean",
+          "description": "Whether this bundle embeds full component payloads instead of references. Recommended value is false."
+        },
+        "purpose": {
+          "type": "string",
+          "description": "Purpose of the cross-repository audit bundle boundary.",
+          "minLength": 1
+        },
+        "limitations": {
+          "type": "array",
+          "description": "Known limitations of this bundle record.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional implementation or review notes."
+    }
+  }
+}
+
