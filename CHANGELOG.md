@@ -2,6 +2,127 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.3.0-candidate
+
+### Status
+
+Candidate release.
+
+The v0.3 schema, example, and validator update have been added.
+
+The GitHub Actions validation workflow has passed.
+
+### Added
+
+* Added `Unified Trace Receipt Integration` as the third integration model.
+* Added `schemas/unified-trace-receipt-integration.schema.json`.
+* Added `examples/unified-trace-receipt-integration.example.yaml`.
+* Updated `scripts/validate_examples.py` to validate:
+
+  * `Sync Audit Trace Link`
+  * `AI Search Trace Integration`
+  * `Unified Trace Receipt Integration`
+* Updated README documentation to describe:
+
+  * v0.3 scope
+  * Unified Trace Receipt bundle linkage
+  * component receipt aggregation
+  * aggregation model
+  * evidence alignment
+  * confidence level
+  * conflict notes
+  * component payload storage boundary
+  * updated repository structure
+  * updated validation expectations
+
+### v0.3 Scope
+
+v0.3 connects synchronization audit trace links and AI Search Trace Receipt integrations to Unified Trace Receipt bundles.
+
+It establishes a structured bridge between:
+
+* synchronization audit cases
+* parent sync audit trace links
+* parent AI search trace integrations
+* unified trace receipt bundles
+* component receipts
+* source fingerprints
+* repository references
+* aggregation models
+* evidence alignment records
+* human review requirements
+* component payload storage boundaries
+
+### Purpose
+
+This release makes it possible to treat multiple evidence routes as a single unified trace bundle.
+
+```text
+synchronization audit judgment
+↓
+sync audit trace link
+↓
+AI search trace receipt
+↓
+unified trace receipt bundle
+↓
+aggregated evidence / alignment / review boundary
+```
+
+### Validation
+
+The following validation path now covers v0.1, v0.2, and v0.3 examples:
+
+```bash
+python scripts/validate_examples.py
+```
+
+Expected validation targets:
+
+```text
+[validate] Sync Audit Trace Link
+[validate] AI Search Trace Integration
+[validate] Unified Trace Receipt Integration
+```
+
+The GitHub Actions workflow validates examples on:
+
+* push to `main`
+* pull request to `main`
+* manual workflow dispatch
+
+### Boundary
+
+This repository does not replace the synchronization audit protocol.
+
+It does not prove legal dependency by itself.
+
+It does not store full third-party source content by default.
+
+It does not store complete search result pages by default.
+
+It does not embed complete component payloads by default.
+
+It links evidence routes, trace references, query metadata, fingerprints, search evidence summaries, component receipts, aggregation metadata, and review metadata so that synchronization audit results can be connected to broader trace systems.
+
+### Repository Role
+
+```text
+synchronization-audit-protocol
+= ruler, classification, human review boundary
+
+sync-audit-trace-integration
+= evidence route, search trace link, unified bundle wiring
+```
+
+### Next
+
+Planned next step:
+
+```text
+v0.4 = Multi-case Synchronization Graph
+```
+
 ## v0.2.0-candidate
 
 ### Status
@@ -65,7 +186,7 @@ query route / source evidence / review boundary
 
 ### Validation
 
-The following validation path now covers both v0.1 and v0.2 examples:
+The following validation path covers both v0.1 and v0.2 examples:
 
 ```bash
 python scripts/validate_examples.py
