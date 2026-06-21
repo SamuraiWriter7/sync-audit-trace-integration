@@ -13,7 +13,12 @@ VALIDATION_TARGETS = [
         "name": "Sync Audit Trace Link",
         "schema": ROOT / "schemas" / "sync-audit-trace-link.schema.json",
         "example": ROOT / "examples" / "sync-audit-trace-link.example.yaml",
-    }
+    },
+    {
+        "name": "AI Search Trace Integration",
+        "schema": ROOT / "schemas" / "ai-search-trace-integration.schema.json",
+        "example": ROOT / "examples" / "ai-search-trace-integration.example.yaml",
+    },
 ]
 
 
@@ -62,6 +67,7 @@ def main() -> int:
             all_ok = False
 
     return 0 if all_ok else 1
+
 
 if __name__ == "__main__":
     sys.exit(main())
