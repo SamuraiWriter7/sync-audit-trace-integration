@@ -1,0 +1,56 @@
+spec_version: v0.1.0
+link_id: sync-audit-trace-link-001
+
+audit_source:
+  protocol: synchronization-audit-protocol
+  audit_case_id: sync-audit-case-2026-001
+  audit_version: v0.5.0
+  classification: possible_influence
+  decision_summary: >
+    The audited outputs share a similar structural pattern, but the available
+    evidence does not prove direct dependency. Further trace review is required.
+  human_review_required: true
+
+trace_targets:
+  trace_receipt_refs:
+    - trace-receipt-2026-001
+  ai_search_trace_refs:
+    - ai-search-trace-receipt-2026-001
+  unified_trace_receipt_refs:
+    - unified-trace-bundle-2026-001
+  repository_refs:
+    - synchronization-audit-protocol
+    - ai-search-trace-receipt-standard
+    - kazene-trace-receipt-protocol
+
+evidence_route:
+  audit_record_path: audits/sync-audit-case-2026-001.yaml
+  evidence_summary: >
+    This link connects the synchronization audit case to related trace receipts,
+    search trace records, and repository-level evidence bundles.
+  source_fingerprint_refs:
+    - structure-fingerprint-2026-001
+  search_trace_refs:
+    - search-session-2026-001
+  receipt_refs:
+    - trace-receipt-2026-001
+    - ai-search-trace-receipt-2026-001
+
+integration_status:
+  status: draft
+  reviewer: human-reviewer-required
+
+boundary:
+  stores_full_source_content: false
+  purpose: >
+    Preserve the evidence route between synchronization audit results and trace
+    receipt systems without storing full third-party source content.
+  limitations:
+    - Does not prove legal dependency by itself.
+    - Requires human review for final classification.
+    - Links references and evidence paths, not full source material.
+
+notes: >
+  v0.1 defines the minimum connection layer between synchronization audit records
+  and trace evidence systems.
+```
