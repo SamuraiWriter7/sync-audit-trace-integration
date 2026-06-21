@@ -216,5 +216,3 @@ sync-audit-trace-integration
 `v0.2.0-candidate` establishes the validated bridge between synchronization audit records and AI Search Trace Receipt records.
 
 The repository now connects audit classification, trace linkage, search-session evidence, and human review boundaries into a single integration layer.
-
-
