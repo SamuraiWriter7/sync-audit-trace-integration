@@ -1,0 +1,76 @@
+spec_version: v0.2.0
+integration_id: ai-search-trace-integration-001
+
+parent_sync_audit_trace_link:
+  link_id: sync-audit-trace-link-001
+  audit_case_id: sync-audit-case-2026-001
+  classification: possible_influence
+
+ai_search_trace_receipt:
+  receipt_id: ai-search-trace-receipt-2026-001
+  standard: AI Search Trace Receipt Standard
+  receipt_version: v0.5.0
+  receipt_ref: ai-search-trace-receipt-standard/examples/ai-search-trace-receipt.example.yaml
+  receipt_hash: sha256-placeholder-for-receipt-integrity
+
+query_context:
+  search_session_id: search-session-2026-001
+  query_purpose: similarity_context_check
+  query_summary: >
+    Search traces were used to compare structural similarity signals,
+    possible prior-art references, and contextual evidence related to the
+    synchronization audit case.
+  query_terms:
+    - synchronization audit trace receipt
+    - structural similarity evidence route
+    - AI search trace receipt
+  searched_at: "2026-06-21T00:00:00Z"
+
+source_evidence:
+  source_refs:
+    - source_id: source-001
+      source_type: repository
+      source_ref: github.com/SamuraiWriter7/synchronization-audit-protocol
+      contribution_role: review_reference
+    - source_id: source-002
+      source_type: repository
+      source_ref: github.com/SamuraiWriter7/ai-search-trace-receipt-standard
+      contribution_role: similarity_signal
+    - source_id: source-003
+      source_type: repository
+      source_ref: github.com/SamuraiWriter7/kazene-trace-receipt-protocol
+      contribution_role: background_context
+  evidence_summary: >
+    The search evidence connects the synchronization audit case to search trace
+    records, related repository references, and receipt-based evidence paths
+    without storing full third-party source content.
+  sampled_evidence_refs:
+    - sampled-evidence-fingerprint-001
+    - encoded-search-trace-sample-001
+
+linkage_assessment:
+  link_strength: moderate
+  assessment_summary: >
+    The AI search trace provides meaningful context for the synchronization
+    audit, but it does not prove direct dependency. Human review remains required.
+  requires_human_review: true
+
+integration_status:
+  status: draft
+  reviewer: human-reviewer-required
+
+boundary:
+  stores_full_search_results: false
+  stores_full_source_content: false
+  purpose: >
+    Link synchronization audit results to AI search trace receipts while
+    preserving references, query context, and evidence routes rather than full
+    search result content.
+  limitations:
+    - Does not prove legal dependency by itself.
+    - Does not store complete search result pages.
+    - Does not store full third-party source content.
+    - Requires human review before final dependency classification.
+
+notes: >
+  v0.2 connects Sync Audit Trace Link records to AI Search Trace Receipt records.
