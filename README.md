@@ -4,7 +4,7 @@
 
 This repository continues the trace-integration work after the first completed arc of [`synchronization-audit-protocol`](https://github.com/SamuraiWriter7/synchronization-audit-protocol).
 
-Where `synchronization-audit-protocol` defines how to audit structural similarity, this repository defines how those audit results can be connected to evidence routes, trace receipts, search records, and repository-level bundles.
+Where `synchronization-audit-protocol` defines how to audit structural similarity, this repository defines how those audit results can be connected to evidence routes, trace receipts, AI search trace receipts, search records, and repository-level bundles.
 
 ## Purpose
 
@@ -46,6 +46,32 @@ The original audit protocol remains the constitutional layer.
 
 This repository becomes the trace wiring layer.
 
+## Current Status
+
+```text
+v0.2.0-candidate
+```
+
+The repository now includes two validated integration models:
+
+```text
+v0.1 = Sync Audit Trace Link
+v0.2 = AI Search Trace Receipt Integration
+```
+
+The schema examples are validated by both the local validation script and the GitHub Actions workflow.
+
+```text
+Status:
+- v0.1 schema added
+- v0.1 example added
+- v0.2 schema added
+- v0.2 example added
+- validation script updated
+- GitHub Actions workflow added
+- example validation passed
+```
+
 ## v0.1 Scope
 
 ### v0.1 — Sync Audit Trace Link
@@ -62,23 +88,35 @@ It records:
 * integration status
 * review boundary conditions
 
-## Current Status
+## v0.2 Scope
+
+### v0.2 — AI Search Trace Receipt Integration
+
+v0.2 connects synchronization audit trace links to AI Search Trace Receipt records.
+
+It records:
+
+* the parent sync audit trace link
+* the related AI Search Trace Receipt
+* search session metadata
+* query purpose and query summary
+* search terms used during the audit
+* source evidence references
+* sampled evidence references
+* linkage assessment
+* human review requirements
+* search-result storage boundaries
+
+This makes it possible to connect a synchronization audit judgment to the search path and reference evidence used during the audit.
 
 ```text
-v0.1.0-candidate
-```
-
-The initial schema, example, validator, and GitHub Actions workflow have been added.
-
-The example validation workflow has passed.
-
-```text
-Status:
-- JSON Schema added
-- YAML example added
-- validation script added
-- GitHub Actions workflow added
-- example validation passed
+synchronization audit judgment
+↓
+sync audit trace link
+↓
+AI search trace receipt
+↓
+query route / source evidence / review boundary
 ```
 
 ## Repository Structure
@@ -86,9 +124,11 @@ Status:
 ```text
 schemas/
   sync-audit-trace-link.schema.json
+  ai-search-trace-integration.schema.json
 
 examples/
   sync-audit-trace-link.example.yaml
+  ai-search-trace-integration.example.yaml
 
 scripts/
   validate_examples.py
@@ -112,7 +152,20 @@ Run validation locally:
 python scripts/validate_examples.py
 ```
 
-The GitHub Actions workflow also validates the example on:
+Expected result:
+
+```text
+[validate] Sync Audit Trace Link
+  schema : schemas/sync-audit-trace-link.schema.json
+  example: examples/sync-audit-trace-link.example.yaml
+[ok] Sync Audit Trace Link example is valid
+[validate] AI Search Trace Integration
+  schema : schemas/ai-search-trace-integration.schema.json
+  example: examples/ai-search-trace-integration.example.yaml
+[ok] AI Search Trace Integration example is valid
+```
+
+The GitHub Actions workflow also validates examples on:
 
 * push to `main`
 * pull requests to `main`
@@ -124,11 +177,14 @@ This repository links evidence routes.
 
 It does not store full third-party source content by default.
 
-It should preserve references, receipts, fingerprints, and review routes rather than duplicating source material.
+It does not store complete search result pages by default.
+
+It should preserve references, receipts, fingerprints, query metadata, and review routes rather than duplicating source material.
 
 ```text
 Audit protocol = decide what kind of similarity exists
 Trace integration = preserve how the evidence path is connected
+Search trace integration = preserve how the search route contributed to the audit
 ```
 
 ## Roadmap
@@ -157,5 +213,8 @@ sync-audit-trace-integration
 
 ## Status Summary
 
-`v0.1.0-candidate` establishes the minimum validated bridge between synchronization audit records and trace evidence systems.
+`v0.2.0-candidate` establishes the validated bridge between synchronization audit records and AI Search Trace Receipt records.
+
+The repository now connects audit classification, trace linkage, search-session evidence, and human review boundaries into a single integration layer.
+
 
