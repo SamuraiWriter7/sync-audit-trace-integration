@@ -1,0 +1,310 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/SamuraiWriter7/sync-audit-trace-integration/schemas/unified-trace-receipt-integration.schema.json",
+  "title": "Unified Trace Receipt Integration",
+  "description": "An integration object connecting synchronization audit trace links and AI search trace integrations to a unified trace receipt bundle.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_version",
+    "integration_id",
+    "parent_records",
+    "unified_trace_receipt",
+    "component_receipts",
+    "aggregation_model",
+    "evidence_alignment",
+    "integration_status",
+    "boundary"
+  ],
+  "properties": {
+    "spec_version": {
+      "type": "string",
+      "description": "Version of this integration specification.",
+      "pattern": "^v[0-9]+\\.[0-9]+(\\.[0-9]+)?(-[a-zA-Z0-9.-]+)?$"
+    },
+    "integration_id": {
+      "type": "string",
+      "description": "Unique identifier for this unified trace receipt integration record.",
+      "minLength": 1
+    },
+    "parent_records": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sync_audit_trace_link_id",
+        "ai_search_trace_integration_id",
+        "audit_case_id"
+      ],
+      "properties": {
+        "sync_audit_trace_link_id": {
+          "type": "string",
+          "description": "Identifier of the parent Sync Audit Trace Link record.",
+          "minLength": 1
+        },
+        "ai_search_trace_integration_id": {
+          "type": "string",
+          "description": "Identifier of the parent AI Search Trace Integration record.",
+          "minLength": 1
+        },
+        "audit_case_id": {
+          "type": "string",
+          "description": "Identifier of the related synchronization audit case.",
+          "minLength": 1
+        },
+        "audit_classification": {
+          "type": "string",
+          "description": "Classification result from the synchronization audit.",
+          "enum": [
+            "natural_convergence",
+            "possible_influence",
+            "probable_influence",
+            "direct_dependency",
+            "unclear",
+            "requires_human_review"
+          ]
+        }
+      }
+    },
+    "unified_trace_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bundle_id",
+        "standard",
+        "bundle_version",
+        "bundle_ref"
+      ],
+      "properties": {
+        "bundle_id": {
+          "type": "string",
+          "description": "Identifier of the unified trace receipt bundle.",
+          "minLength": 1
+        },
+        "standard": {
+          "type": "string",
+          "description": "Name of the unified trace receipt standard or bundle model.",
+          "const": "Unified Trace Receipt"
+        },
+        "bundle_version": {
+          "type": "string",
+          "description": "Version of the unified trace receipt model used.",
+          "minLength": 1
+        },
+        "bundle_ref": {
+          "type": "string",
+          "description": "Path, URI, or repository reference to the unified trace receipt bundle.",
+          "minLength": 1
+        },
+        "bundle_hash": {
+          "type": "string",
+          "description": "Optional digest or hash for bundle integrity checking."
+        }
+      }
+    },
+    "component_receipts": {
+      "type": "array",
+      "description": "Receipts or trace records aggregated into the unified bundle.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "component_id",
+          "component_type",
+          "component_ref",
+          "role"
+        ],
+        "properties": {
+          "component_id": {
+            "type": "string",
+            "description": "Identifier of the component receipt or trace record.",
+            "minLength": 1
+          },
+          "component_type": {
+            "type": "string",
+            "description": "Type of component included in the unified bundle.",
+            "enum": [
+              "sync_audit_trace_link",
+              "ai_search_trace_receipt",
+              "trace_receipt",
+              "source_fingerprint",
+              "repository_reference",
+              "human_review_record",
+              "other"
+            ]
+          },
+          "component_ref": {
+            "type": "string",
+            "description": "Path, URI, or citation reference to the component.",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "description": "Role of this component in the unified trace bundle.",
+            "enum": [
+              "primary_audit_record",
+              "search_trace_evidence",
+              "supporting_receipt",
+              "fingerprint_reference",
+              "repository_context",
+              "review_boundary",
+              "other"
+            ]
+          },
+          "integrity_hash": {
+            "type": "string",
+            "description": "Optional digest or hash for component integrity checking."
+          }
+        }
+      }
+    },
+    "aggregation_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "aggregation_type",
+        "aggregation_summary"
+      ],
+      "properties": {
+        "aggregation_type": {
+          "type": "string",
+          "description": "How component receipts are aggregated into the unified trace bundle.",
+          "enum": [
+            "reference_bundle",
+            "evidence_bundle",
+            "review_bundle",
+            "cross_repository_bundle",
+            "mixed_bundle"
+          ]
+        },
+        "aggregation_summary": {
+          "type": "string",
+          "description": "Human-readable summary of the aggregation logic.",
+          "minLength": 1
+        },
+        "ordering_rule": {
+          "type": "string",
+          "description": "Optional rule describing the ordering of component receipts.",
+          "enum": [
+            "chronological",
+            "dependency_order",
+            "evidence_strength",
+            "repository_order",
+            "manual_order",
+            "unspecified"
+          ]
+        },
+        "deduplication_rule": {
+          "type": "string",
+          "description": "Optional rule for handling duplicate or overlapping evidence references."
+        }
+      }
+    },
+    "evidence_alignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "alignment_summary",
+        "confidence_level",
+        "requires_human_review"
+      ],
+      "properties": {
+        "alignment_summary": {
+          "type": "string",
+          "description": "Summary of how the unified receipt aligns audit, search, and trace evidence.",
+          "minLength": 1
+        },
+        "confidence_level": {
+          "type": "string",
+          "description": "Confidence level for the evidence alignment.",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "inconclusive"
+          ]
+        },
+        "conflict_notes": {
+          "type": "array",
+          "description": "Known conflicts, gaps, or unresolved evidence tensions.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "requires_human_review": {
+          "type": "boolean",
+          "description": "Whether human review is required before treating the unified bundle as resolved."
+        }
+      }
+    },
+    "integration_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "linked",
+            "reviewed",
+            "archived"
+          ]
+        },
+        "reviewer": {
+          "type": "string",
+          "description": "Human or agent responsible for reviewing this integration."
+        },
+        "reviewed_at": {
+          "type": "string",
+          "description": "Review timestamp in ISO 8601 format.",
+          "format": "date-time"
+        }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stores_full_source_content",
+        "stores_full_search_results",
+        "stores_component_payloads",
+        "purpose"
+      ],
+      "properties": {
+        "stores_full_source_content": {
+          "type": "boolean",
+          "description": "Whether this integration stores full third-party source content. Recommended value is false."
+        },
+        "stores_full_search_results": {
+          "type": "boolean",
+          "description": "Whether this integration stores full search result pages. Recommended value is false."
+        },
+        "stores_component_payloads": {
+          "type": "boolean",
+          "description": "Whether this integration embeds full component payloads instead of references. Recommended value is false."
+        },
+        "purpose": {
+          "type": "string",
+          "description": "Purpose of the unified trace receipt integration boundary.",
+          "minLength": 1
+        },
+        "limitations": {
+          "type": "array",
+          "description": "Known limitations of this integration record.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional implementation or review notes."
+    }
+  }
+}
