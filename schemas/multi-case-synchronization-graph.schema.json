@@ -1,0 +1,342 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/SamuraiWriter7/sync-audit-trace-integration/schemas/multi-case-synchronization-graph.schema.json",
+  "title": "Multi-case Synchronization Graph",
+  "description": "A graph model for connecting multiple synchronization audit cases, trace links, search trace integrations, and unified trace receipt bundles.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_version",
+    "graph_id",
+    "graph_scope",
+    "case_nodes",
+    "case_edges",
+    "graph_analysis",
+    "integration_status",
+    "boundary"
+  ],
+  "properties": {
+    "spec_version": {
+      "type": "string",
+      "description": "Version of this graph specification.",
+      "pattern": "^v[0-9]+\\.[0-9]+(\\.[0-9]+)?(-[a-zA-Z0-9.-]+)?$"
+    },
+    "graph_id": {
+      "type": "string",
+      "description": "Unique identifier for this multi-case synchronization graph.",
+      "minLength": 1
+    },
+    "graph_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope_type",
+        "scope_summary"
+      ],
+      "properties": {
+        "scope_type": {
+          "type": "string",
+          "description": "Scope of the synchronization graph.",
+          "enum": [
+            "single_repository",
+            "cross_repository",
+            "cross_project",
+            "cross_domain",
+            "historical_case_cluster",
+            "other"
+          ]
+        },
+        "scope_summary": {
+          "type": "string",
+          "description": "Human-readable summary of the graph scope.",
+          "minLength": 1
+        },
+        "repository_refs": {
+          "type": "array",
+          "description": "Repositories included in the graph scope.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "time_window": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "start": {
+              "type": "string",
+              "description": "Optional start timestamp for the graph scope.",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "description": "Optional end timestamp for the graph scope.",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    },
+    "case_nodes": {
+      "type": "array",
+      "description": "Synchronization audit cases represented as graph nodes.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "node_id",
+          "audit_case_id",
+          "classification",
+          "sync_audit_trace_link_ref",
+          "node_summary"
+        ],
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "description": "Unique node identifier within this graph.",
+            "minLength": 1
+          },
+          "audit_case_id": {
+            "type": "string",
+            "description": "Identifier of the synchronization audit case.",
+            "minLength": 1
+          },
+          "classification": {
+            "type": "string",
+            "description": "Classification result from the synchronization audit.",
+            "enum": [
+              "natural_convergence",
+              "possible_influence",
+              "probable_influence",
+              "direct_dependency",
+              "unclear",
+              "requires_human_review"
+            ]
+          },
+          "sync_audit_trace_link_ref": {
+            "type": "string",
+            "description": "Reference to the Sync Audit Trace Link record.",
+            "minLength": 1
+          },
+          "ai_search_trace_integration_ref": {
+            "type": "string",
+            "description": "Reference to the AI Search Trace Integration record."
+          },
+          "unified_trace_receipt_integration_ref": {
+            "type": "string",
+            "description": "Reference to the Unified Trace Receipt Integration record."
+          },
+          "repository_refs": {
+            "type": "array",
+            "description": "Repositories associated with this case node.",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "node_summary": {
+            "type": "string",
+            "description": "Human-readable summary of this case node.",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "case_edges": {
+      "type": "array",
+      "description": "Relationships between synchronization audit case nodes.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "edge_id",
+          "source_node_id",
+          "target_node_id",
+          "relationship_type",
+          "relationship_strength",
+          "assessment_summary",
+          "requires_human_review"
+        ],
+        "properties": {
+          "edge_id": {
+            "type": "string",
+            "description": "Unique edge identifier within this graph.",
+            "minLength": 1
+          },
+          "source_node_id": {
+            "type": "string",
+            "description": "Source node identifier.",
+            "minLength": 1
+          },
+          "target_node_id": {
+            "type": "string",
+            "description": "Target node identifier.",
+            "minLength": 1
+          },
+          "relationship_type": {
+            "type": "string",
+            "description": "Type of relationship between the two audit cases.",
+            "enum": [
+              "similar_structure",
+              "possible_influence_path",
+              "probable_influence_path",
+              "direct_dependency_path",
+              "natural_convergence_cluster",
+              "shared_source_context",
+              "shared_search_trace",
+              "contradictory_evidence",
+              "unclear"
+            ]
+          },
+          "relationship_strength": {
+            "type": "string",
+            "description": "Strength of the relationship between nodes.",
+            "enum": [
+              "weak",
+              "moderate",
+              "strong",
+              "inconclusive"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "description": "References supporting this edge relationship.",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "assessment_summary": {
+            "type": "string",
+            "description": "Human-readable assessment of the edge relationship.",
+            "minLength": 1
+          },
+          "requires_human_review": {
+            "type": "boolean",
+            "description": "Whether this edge relationship requires human review."
+          }
+        }
+      }
+    },
+    "graph_analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "analysis_summary",
+        "dominant_pattern",
+        "confidence_level",
+        "requires_human_review"
+      ],
+      "properties": {
+        "analysis_summary": {
+          "type": "string",
+          "description": "Summary of the graph-level synchronization pattern.",
+          "minLength": 1
+        },
+        "dominant_pattern": {
+          "type": "string",
+          "description": "Dominant pattern detected across the graph.",
+          "enum": [
+            "natural_convergence_cluster",
+            "possible_influence_network",
+            "probable_influence_network",
+            "direct_dependency_chain",
+            "mixed_pattern",
+            "inconclusive"
+          ]
+        },
+        "confidence_level": {
+          "type": "string",
+          "description": "Confidence level of the graph-level analysis.",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "inconclusive"
+          ]
+        },
+        "conflict_notes": {
+          "type": "array",
+          "description": "Known conflicts, gaps, or unresolved tensions in the graph.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "requires_human_review": {
+          "type": "boolean",
+          "description": "Whether graph-level human review is required."
+        }
+      }
+    },
+    "integration_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "linked",
+            "reviewed",
+            "archived"
+          ]
+        },
+        "reviewer": {
+          "type": "string",
+          "description": "Human or agent responsible for reviewing this graph."
+        },
+        "reviewed_at": {
+          "type": "string",
+          "description": "Review timestamp in ISO 8601 format.",
+          "format": "date-time"
+        }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stores_full_source_content",
+        "stores_full_search_results",
+        "stores_component_payloads",
+        "purpose"
+      ],
+      "properties": {
+        "stores_full_source_content": {
+          "type": "boolean",
+          "description": "Whether this graph stores full third-party source content. Recommended value is false."
+        },
+        "stores_full_search_results": {
+          "type": "boolean",
+          "description": "Whether this graph stores full search result pages. Recommended value is false."
+        },
+        "stores_component_payloads": {
+          "type": "boolean",
+          "description": "Whether this graph embeds full component payloads instead of references. Recommended value is false."
+        },
+        "purpose": {
+          "type": "string",
+          "description": "Purpose of the multi-case synchronization graph boundary.",
+          "minLength": 1
+        },
+        "limitations": {
+          "type": "array",
+          "description": "Known limitations of this graph record.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional implementation or review notes."
+    }
+  }
+}
