@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/SamuraiWriter7/sync-audit-trace-integration/schemas/sync-audit-trace-link.schema.json",
+  "title": "Sync Audit Trace Link",
+  "description": "A minimal link object connecting a synchronization audit record to trace receipts, AI search traces, and evidence routes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_version",
+    "link_id",
+    "audit_source",
+    "trace_targets",
+    "evidence_route",
+    "integration_status",
+    "boundary"
+  ],
+  "properties": {
+    "spec_version": {
+      "type": "string",
+      "description": "Version of this integration specification.",
+      "pattern": "^v[0-9]+\\.[0-9]+(\\.[0-9]+)?(-[a-zA-Z0-9.-]+)?$"
+    },
+    "link_id": {
+      "type": "string",
+      "description": "Unique identifier for this sync audit trace link.",
+      "minLength": 1
+    },
+    "audit_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "audit_case_id",
+        "audit_version",
+        "classification",
+        "human_review_required"
+      ],
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "description": "Source audit protocol name.",
+          "const": "synchronization-audit-protocol"
+        },
+        "audit_case_id": {
+          "type": "string",
+          "description": "Identifier of the synchronization audit case.",
+          "minLength": 1
+        },
+        "audit_version": {
+          "type": "string",
+          "description": "Version of the source audit protocol used for the case.",
+          "minLength": 1
+        },
+        "classification": {
+          "type": "string",
+          "description": "Classification result from the synchronization audit.",
+          "enum": [
+            "natural_convergence",
+            "possible_influence",
+            "probable_influence",
+            "direct_dependency",
+            "unclear",
+            "requires_human_review"
+          ]
+        },
+        "decision_summary": {
+          "type": "string",
+          "description": "Short summary of the audit decision."
+        },
+        "human_review_required": {
+          "type": "boolean",
+          "description": "Whether human review is required before treating the link as resolved."
+        }
+      }
+    },
+    "trace_targets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "trace_receipt_refs": {
+          "type": "array",
+          "description": "References to Trace Receipt records.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "ai_search_trace_refs": {
+          "type": "array",
+          "description": "References to AI Search Trace Receipt records.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "unified_trace_receipt_refs": {
+          "type": "array",
+          "description": "References to Unified Trace Receipt bundles.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "repository_refs": {
+          "type": "array",
+          "description": "Repositories involved in the audit trace linkage.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "evidence_route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "audit_record_path",
+        "evidence_summary"
+      ],
+      "properties": {
+        "audit_record_path": {
+          "type": "string",
+          "description": "Path or URI pointing to the original audit record.",
+          "minLength": 1
+        },
+        "evidence_summary": {
+          "type": "string",
+          "description": "Human-readable summary of the evidence route.",
+          "minLength": 1
+        },
+        "source_fingerprint_refs": {
+          "type": "array",
+          "description": "References to structure fingerprints or source fingerprints.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "search_trace_refs": {
+          "type": "array",
+          "description": "References to search traces used during the audit.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "receipt_refs": {
+          "type": "array",
+          "description": "References to trace receipts used as supporting evidence.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "integration_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "linked",
+            "reviewed",
+            "archived"
+          ]
+        },
+        "reviewer": {
+          "type": "string",
+          "description": "Human or agent responsible for reviewing this link."
+        },
+        "reviewed_at": {
+          "type": "string",
+          "description": "Review timestamp in ISO 8601 format.",
+          "format": "date-time"
+        }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stores_full_source_content",
+        "purpose"
+      ],
+      "properties": {
+        "stores_full_source_content": {
+          "type": "boolean",
+          "description": "Whether this link stores full source content. Recommended value is false."
+        },
+        "purpose": {
+          "type": "string",
+          "description": "Purpose of the trace integration boundary.",
+          "minLength": 1
+        },
+        "limitations": {
+          "type": "array",
+          "description": "Known limitations of this link record.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional implementation or review notes."
+    }
+  }
+}
