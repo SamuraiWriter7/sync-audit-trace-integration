@@ -1,16 +1,16 @@
 # Sync Audit Trace Integration
 
-**Sync Audit Trace Integration** is an integration layer for connecting synchronization audit records with trace receipts, AI search traces, unified trace receipt bundles, multi-case synchronization graphs, and cross-repository evidence bundles.
+**Sync Audit Trace Integration** is an integration layer for connecting synchronization audit records with trace receipts, AI search traces, unified trace receipt bundles, multi-case synchronization graphs, and cross-repository audit bundles.
 
 This repository continues the trace-integration work after the first completed arc of [`synchronization-audit-protocol`](https://github.com/SamuraiWriter7/synchronization-audit-protocol).
 
-Where `synchronization-audit-protocol` defines how to audit structural similarity, this repository defines how those audit results can be connected to evidence routes, trace receipts, AI search trace receipts, unified trace receipt bundles, multi-case graphs, search records, and repository-level bundles.
+Where `synchronization-audit-protocol` defines how to audit structural similarity, this repository defines how those audit results can be connected to evidence routes, trace receipts, AI search trace receipts, unified trace receipt bundles, multi-case graphs, and cross-repository review bundles.
 
 ## Purpose
 
 `sync-audit-trace-integration` exists to answer the following question:
 
-> Once a synchronization audit has been performed, how should its evidence path be connected, preserved, bundled, graphed, and referenced across trace systems?
+> Once a synchronization audit has been performed, how should its evidence path be connected, preserved, bundled, graphed, packaged, and reviewed across repositories?
 
 This repository does not replace the original audit protocol.
 
@@ -20,7 +20,7 @@ Instead, it provides an integration layer for connecting synchronization audit r
 * AI Search Trace Receipt records
 * Unified Trace Receipt bundles
 * Multi-case synchronization graphs
-* Cross-repository audit evidence
+* Cross-repository audit bundles
 
 ## Relationship to Synchronization Audit Protocol
 
@@ -39,26 +39,27 @@ synchronization-audit-protocol
 = ruler, classification, human review boundary
 
 sync-audit-trace-integration
-= evidence route, trace link, unified bundle, synchronization graph
+= evidence route, trace link, unified bundle, synchronization graph, cross-repository audit container
 ```
 
 The original audit protocol remains the constitutional layer.
 
-This repository becomes the trace wiring, evidence bundling, and graph integration layer.
+This repository becomes the trace wiring, evidence bundling, graph integration, and cross-repository packaging layer.
 
 ## Current Status
 
 ```text
-v0.4.0-candidate
+v0.5.0-candidate
 ```
 
-The repository now includes four validated integration models:
+The repository now includes five validated integration models:
 
 ```text
 v0.1 = Sync Audit Trace Link
 v0.2 = AI Search Trace Receipt Integration
 v0.3 = Unified Trace Receipt Integration
 v0.4 = Multi-case Synchronization Graph
+v0.5 = Cross-repository Audit Bundle
 ```
 
 The schema examples are validated by both the local validation script and the GitHub Actions workflow.
@@ -73,6 +74,8 @@ Status:
 - v0.3 example added
 - v0.4 schema added
 - v0.4 example added
+- v0.5 schema added
+- v0.5 example added
 - validation script updated
 - GitHub Actions workflow added
 - example validation passed
@@ -199,6 +202,51 @@ multi-case synchronization graph
 case relationships / graph pattern / review boundary
 ```
 
+## v0.5 Scope
+
+### v0.5 — Cross-repository Audit Bundle
+
+v0.5 collects audit records, trace integrations, AI search trace references, unified receipt integrations, multi-case graphs, and supporting evidence across multiple repositories into a reviewable audit bundle.
+
+It records:
+
+* the bundle scope
+* bundle purpose
+* optional time window
+* included repositories
+* repository roles
+* revision references
+* included records
+* record types and roles
+* source repository identifiers
+* integrity hash placeholders
+* multi-case graph references
+* bundle manifest
+* assembly rule
+* deduplication rule
+* completeness level
+* review model
+* human review requirements
+* cross-repository storage boundaries
+
+This makes it possible to treat distributed audit evidence as a single reviewable cross-repository package.
+
+```text
+single audit case
+↓
+trace link
+↓
+search trace
+↓
+unified receipt bundle
+↓
+multi-case synchronization graph
+↓
+cross-repository audit bundle
+↓
+review package / repository references / integrity metadata
+```
+
 ## Repository Structure
 
 ```text
@@ -207,12 +255,14 @@ schemas/
   ai-search-trace-integration.schema.json
   unified-trace-receipt-integration.schema.json
   multi-case-synchronization-graph.schema.json
+  cross-repository-audit-bundle.schema.json
 
 examples/
   sync-audit-trace-link.example.yaml
   ai-search-trace-integration.example.yaml
   unified-trace-receipt-integration.example.yaml
   multi-case-synchronization-graph.example.yaml
+  cross-repository-audit-bundle.example.yaml
 
 scripts/
   validate_examples.py
@@ -255,6 +305,10 @@ Expected result:
   schema : schemas/multi-case-synchronization-graph.schema.json
   example: examples/multi-case-synchronization-graph.example.yaml
 [ok] Multi-case Synchronization Graph example is valid
+[validate] Cross-repository Audit Bundle
+  schema : schemas/cross-repository-audit-bundle.schema.json
+  example: examples/cross-repository-audit-bundle.example.yaml
+[ok] Cross-repository Audit Bundle example is valid
 ```
 
 The GitHub Actions workflow also validates examples on:
@@ -265,7 +319,7 @@ The GitHub Actions workflow also validates examples on:
 
 ## Design Boundary
 
-This repository links evidence routes, bundles trace references, and graphs relationships among audit cases.
+This repository links evidence routes, bundles trace references, graphs relationships among audit cases, and packages cross-repository audit evidence.
 
 It does not store full third-party source content by default.
 
@@ -273,7 +327,7 @@ It does not store complete search result pages by default.
 
 It does not embed complete component payloads by default.
 
-It should preserve references, receipts, fingerprints, query metadata, aggregation metadata, graph metadata, and review routes rather than duplicating source material.
+It should preserve references, receipts, fingerprints, query metadata, aggregation metadata, graph metadata, repository references, integrity metadata, and review routes rather than duplicating source material.
 
 ```text
 Audit protocol = decide what kind of similarity exists
@@ -281,6 +335,7 @@ Trace integration = preserve how the evidence path is connected
 Search trace integration = preserve how the search route contributed to the audit
 Unified trace integration = bundle related evidence routes into one reviewable trace unit
 Multi-case graph = connect multiple audit cases into a reviewable synchronization map
+Cross-repository bundle = package distributed evidence into a reviewable audit container
 ```
 
 ## Roadmap
@@ -297,18 +352,18 @@ v0.5 = Cross-repository Audit Bundle
 
 The original synchronization audit protocol should remain lightweight.
 
-This repository exists so that trace integration, search receipt linkage, unified evidence bundling, multi-case graphing, and cross-repository evidence bundles can evolve without overloading the audit protocol itself.
+This repository exists so that trace integration, search receipt linkage, unified evidence bundling, multi-case graphing, and cross-repository evidence packaging can evolve without overloading the audit protocol itself.
 
 ```text
 synchronization-audit-protocol
 = the blade that classifies structural similarity
 
 sync-audit-trace-integration
-= the wind route that carries, bundles, and maps the evidence
+= the wind route that carries, bundles, maps, and packages the evidence
 ```
 
 ## Status Summary
 
-`v0.4.0-candidate` establishes the validated bridge between synchronization audit records, AI Search Trace Receipt records, Unified Trace Receipt bundles, and multi-case synchronization graphs.
+`v0.5.0-candidate` establishes the validated bridge between synchronization audit records, AI Search Trace Receipt records, Unified Trace Receipt bundles, multi-case synchronization graphs, and cross-repository audit bundles.
 
-The repository now connects audit classification, trace linkage, search-session evidence, unified receipt aggregation, graph-level relationship analysis, and human review boundaries into a single integration layer.
+The repository now connects audit classification, trace linkage, search-session evidence, unified receipt aggregation, graph-level relationship analysis, cross-repository packaging, and human review boundaries into a single integration layer.
